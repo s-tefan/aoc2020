@@ -1,5 +1,4 @@
-
-
+# Advent of code 2020, day 4
 def add_from_file_to_wordlist(f, word_list):
     line = f.readline()
     eof = not line
@@ -9,7 +8,6 @@ def add_from_file_to_wordlist(f, word_list):
         return add_from_file_to_wordlist(f, word_list)
     else:
         return word_list, eof
-
     
 def get_passport_from_file(f):
     blurp = add_from_file_to_wordlist(f, [])
