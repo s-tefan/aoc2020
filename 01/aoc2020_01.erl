@@ -1,4 +1,4 @@
--module(aoc).
+-module(aoc2020_01).
 -export([
     start/0,
     lcheck/1,
