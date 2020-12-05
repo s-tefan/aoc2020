@@ -18,6 +18,11 @@ def one():
                 min = a
     return min, max
 
+def one_var():
+    filename = "input.txt"
+    with open(filename) as f:
+        return max(int("".join([bin_sub(c) for c in line.strip()]), 2) for line in f)
+
 def two():
     filename = "input.txt"
     min, max = one() 
@@ -28,5 +33,6 @@ def two():
     return set(range(min+1,max)) - bp_set
 
 print(one()[1])
+print(one_var())
 print(two())
 
