@@ -5,19 +5,12 @@
     read_int/2
 ]).
 
-list_print([A|B]) ->
-    io:format("~w, ", [A]),
-    list_print(B);
-list_print([]) ->
-    io:format("~n", []).
-
-
 
 start() ->
     {ok, File} = file:open("input.txt",[read]),
     A = read_int(File, []),
     file:close(File),
-    list_print(A),
+    %list_print(A),
     lcheck(A).
 
 
@@ -41,7 +34,7 @@ read_int(File, A) ->
     end.
 
 lcheck_first([A|[B|_]]) when A + B == 2020 -> A * B;
-lcheck_first([A|[_|C]]) -> lcheck([A|C]);
+lcheck_first([A|[_|C]]) -> lcheck_first([A|C]);
 lcheck_first([_|[]]) -> false.
 
 lcheck([A|B]) ->
