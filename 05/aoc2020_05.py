@@ -21,7 +21,9 @@ def one():
 def one_var():
     filename = "input.txt"
     with open(filename) as f:
-        return max(int("".join([bin_sub(c) for c in line.strip()]), 2) for line in f)
+        return max(int("".join([bin_sub(c) \
+            for c in line.strip()]), 2) \
+            for line in f )
 
 def two():
     filename = "input.txt"
