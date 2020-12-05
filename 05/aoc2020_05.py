@@ -34,7 +34,17 @@ def two():
             bp_set.add(int("".join([bin_sub(c) for c in line.strip()]), 2))
     return set(range(min+1,max)) - bp_set
 
+def two_var():
+    filename = "input.txt"
+    min, max = one() 
+    with open(filename) as f:
+        return \
+            set(range(min+1,max)) - \
+            {int("".join([bin_sub(c) for c in line.strip()]), 2) \
+                for line in f }
+
 print(one()[1])
 print(one_var())
 print(two())
+print(two_var())
 
