@@ -9,33 +9,23 @@
     sum_check3/2
 ]).
 
-
 start() ->
     {ok, File} = file:open("input.txt",[read]),
     A = read_int(File, []),
     file:close(File),
-    %list_print(A),
     {sum_check2(A, 2020), sum_check3(A, 2020)}.
-
 
 read_int(File, A) ->
     Apa = io:fread(File, "", "~d"),
-    %io:format("~w~n", [Apa]),
     case Apa of
     eof -> 
-        %io:fwrite("Nu är det slut~n"),
         A;
     {ok, [N]} ->
-        %io:format("Läst: ~w~n", [N]),
         read_int(File, [N | A]);
-    {ok, _} ->
-        %io:format("Tomt",[]),
-        read_int(File, A);
     {error, What} -> 
         io:format("io:fread error: ~w~n", [What]),
         A
     end.
-
             
 sum_check1(L, Sum) ->
     case L of
@@ -63,7 +53,6 @@ sum_check2(L, Sum) ->
             stop
     end.
 
-
 sum_check3(L, Sum) ->
     case L of
         [A,B,C|_] when A+B+C == Sum ->
@@ -80,7 +69,6 @@ sum_check3(L, Sum) ->
             stop
     end.
 
-
 % Another version
 
 lcheck_first([A|[B|_]]) when A + B == 2020 -> A * B;
@@ -94,10 +82,7 @@ lcheck([A|B]) ->
     end;
 lcheck([]) -> false.
 
-
-
-
-%%% This has an awful complexity, O(3^n)
+%%% This has awful complexity, O(3^n)
 lcheck2(L) ->
     list_print(L),
     case L of
@@ -126,6 +111,3 @@ list_print([A|[]]) ->
     io:format("~w~n", [A]);
 list_print([]) ->
     io:format("~n", []).
-
-
-
