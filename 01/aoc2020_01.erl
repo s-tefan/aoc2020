@@ -2,7 +2,8 @@
 -export([
     start/0,
     lcheck/1,
-    read_int/2
+    read_int/2,
+    lcheck2/1
 ]).
 
 
@@ -11,8 +12,7 @@ start() ->
     A = read_int(File, []),
     file:close(File),
     %list_print(A),
-    lcheck(A).
-
+    {lcheck2(A)}.
 
 
 read_int(File, A) ->
@@ -43,4 +43,36 @@ lcheck([A|B]) ->
         C -> C
     end;
 lcheck([]) -> false.
+
+
+lcheck2(L) ->
+    list_print(L),
+    case L of
+        [A,B,C|_] when A+B+C == 2020 -> A*B*C;
+        [A,B,C|D] -> 
+            E = lcheck2([A,B|D]),
+            if E == stop ->
+                F = lcheck2([B,C|D]),
+                if F == stop ->
+                    lcheck2([A,C|D]);
+                true ->
+                    F
+                end;
+            true ->
+                E
+            end;
+        [_,_] -> stop;
+        [_] -> stop;
+        [] -> stop
+    end.
+
+list_print([A|[B|C]]) ->
+    io:format("~w, ", [A]),
+    list_print([B|C]);
+list_print([A|[]]) ->
+    io:format("~w~n", [A]);
+list_print([]) ->
+    io:format("~n", []).
+
+
 
