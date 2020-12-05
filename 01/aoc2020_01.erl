@@ -74,13 +74,7 @@ sum_check3(L, Sum) ->
                 P1 /= stop ->
                     A * P1;
                 true ->
-                    P2 = sum_check3(T, Sum),
-                    if
-                        P2 /= stop ->
-                            P2;
-                        true -> 
-                            stop
-                    end
+                    sum_check3(T, Sum)
             end;
         [] ->
             stop
