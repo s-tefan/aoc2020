@@ -15,26 +15,79 @@ start() ->
     A = read_int(File, []),
     file:close(File),
     %list_print(A),
-    sum_check2(A, 2020).
+    {sum_check2(A, 2020), sum_check3(A, 2020)}.
 
 
 read_int(File, A) ->
     Apa = io:fread(File, "", "~d"),
-    io:format("~w~n", [Apa]),
+    %io:format("~w~n", [Apa]),
     case Apa of
     eof -> 
-        io:fwrite("Nu är det slut~n"),
+        %io:fwrite("Nu är det slut~n"),
         A;
     {ok, [N]} ->
-        io:format("Läst: ~w~n", [N]),
+        %io:format("Läst: ~w~n", [N]),
         read_int(File, [N | A]);
     {ok, _} ->
-        io:format("Tomt",[]),
+        %io:format("Tomt",[]),
         read_int(File, A);
     {error, What} -> 
         io:format("io:fread error: ~w~n", [What]),
         A
     end.
+
+            
+sum_check1(L, Sum) ->
+    case L of
+        [A|_] when A == Sum ->
+            A;
+        [_|T] ->
+            sum_check1(T, Sum);
+        [] ->
+            stop
+    end.
+
+sum_check2(L, Sum) ->
+    case L of
+        [A,B|_] when A+B == Sum ->
+            A*B;
+        [A|T] ->
+            P1 = sum_check1(T, Sum-A),
+            if 
+                P1 == stop ->
+                    sum_check2(T, Sum);
+                true ->
+                    A*P1
+            end;
+        [] ->
+            stop
+    end.
+
+
+sum_check3(L, Sum) ->
+    case L of
+        [A,B,C|_] when A+B+C == Sum ->
+            A*B*C;
+        [A|T] ->
+            P1 = sum_check2(T, Sum-A),
+            if 
+                P1 /= stop ->
+                    A * P1;
+                true ->
+                    P2 = sum_check3(T, Sum),
+                    if
+                        P2 /= stop ->
+                            P2;
+                        true -> 
+                            stop
+                    end
+            end;
+        [] ->
+            stop
+    end.
+
+
+% Another version
 
 lcheck_first([A|[B|_]]) when A + B == 2020 -> A * B;
 lcheck_first([A|[_|C]]) -> lcheck_first([A|C]);
@@ -48,56 +101,6 @@ lcheck([A|B]) ->
 lcheck([]) -> false.
 
 
-            
-sum_check1(L, sum) ->
-    case L of
-        [A|_] when A == sum ->
-            A;
-        [_|T] ->
-            sum_check1(T,sum);
-        [] ->
-            stop
-    end.
-
-sum_check2(L, sum) ->
-    case L of
-        [A,B|_] when A+B == sum ->
-            A*B;
-        [A|T] ->
-            P1 = sum_check1(T, sum-A),
-            if 
-                P1 == stop ->
-                    sum_check2(T, sum);
-                true ->
-                    A*P1
-            end;
-        [] ->
-            stop
-    end.
-
-
-sum_check3(L, sum) ->
-    case L of
-        [A,B,C|_] when A+B+C == sum ->
-            A*B*C;
-        [A,B|T] ->
-            P1 = sum_check2([B|T], sum-A),
-            if 
-                P1 == stop ->
-                    P2 = sum_check1(T, sum-A-B),
-                    if
-                        P2 == stop ->
-                            P3 = sum_check2(T, sum-A),
-                            A * P3;
-                        true ->
-                            A * B * P2
-                    end;
-                true ->
-                    A * P1 
-            end;
-        [_|[]] ->
-            stop
-    end.
 
 
 %%% This has an awful complexity, O(3^n)
