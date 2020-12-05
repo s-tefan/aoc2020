@@ -3,7 +3,10 @@
     start/0,
     lcheck/1,
     read_int/2,
-    lcheck2/1
+    lcheck2/1,
+    sum_check1/2,
+    sum_check2/2,
+    sum_check3/2
 ]).
 
 
@@ -12,7 +15,7 @@ start() ->
     A = read_int(File, []),
     file:close(File),
     %list_print(A),
-    {lcheck2(A)}.
+    sum_check2(A, 2020).
 
 
 read_int(File, A) ->
@@ -45,6 +48,59 @@ lcheck([A|B]) ->
 lcheck([]) -> false.
 
 
+            
+sum_check1(L, sum) ->
+    case L of
+        [A|_] when A == sum ->
+            A;
+        [_|T] ->
+            sum_check1(T,sum);
+        [] ->
+            stop
+    end.
+
+sum_check2(L, sum) ->
+    case L of
+        [A,B|_] when A+B == sum ->
+            A*B;
+        [A|T] ->
+            P1 = sum_check1(T, sum-A),
+            if 
+                P1 == stop ->
+                    sum_check2(T, sum);
+                true ->
+                    A*P1
+            end;
+        [] ->
+            stop
+    end.
+
+
+sum_check3(L, sum) ->
+    case L of
+        [A,B,C|_] when A+B+C == sum ->
+            A*B*C;
+        [A,B|T] ->
+            P1 = sum_check2([B|T], sum-A),
+            if 
+                P1 == stop ->
+                    P2 = sum_check1(T, sum-A-B),
+                    if
+                        P2 == stop ->
+                            P3 = sum_check2(T, sum-A),
+                            A * P3;
+                        true ->
+                            A * B * P2
+                    end;
+                true ->
+                    A * P1 
+            end;
+        [_|[]] ->
+            stop
+    end.
+
+
+%%% This has an awful complexity, O(3^n)
 lcheck2(L) ->
     list_print(L),
     case L of
