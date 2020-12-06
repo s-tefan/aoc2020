@@ -3,6 +3,8 @@
     count_letter/2
 ]).
 
+% To be completed ...
+
 start() ->
     {ok, File} = file:open("input.txt",[read]),
     A = read_lines(File, []),
