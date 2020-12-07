@@ -9,24 +9,24 @@ def read(f):
 
 def fix(bagitem):
     n, cattr, color, _ = bagitem.split(" ")
-    return (cattr,color), int(n)
+    return {'c': (cattr,color), 'n': int(n)}
 
 def simplify(contain_dict):
-    return {k:tuple(map(lambda a : a[0], contain_dict[k])) for k in contain_dict}
+    return {k:tuple(map(lambda a : a['c'], contain_dict[k])) for k in contain_dict}
 
 def find_containers(bag, contain_dict):
     return set(k for k in contain_dict if bag in contain_dict[k])
 
 def find_containers_transitively(bags, contain_dict):
-        new = set.union(*[find_containers(bag, contain_dict) for bag in bags])
+        new = set.union(*(find_containers(bag, contain_dict) for bag in bags))
         return bags if new.issubset(bags) else find_containers_transitively(bags.union(new), contain_dict)
 
 def count_bags(bag, contain_dict):
-    return sum(bag[1]*(1+count_bags(bag,contain_dict)) for bag in contain_dict[bag[0]])
+    return sum(bag['n']*(1+count_bags(bag,contain_dict)) for bag in contain_dict[bag['c']])
 
 with open("input.txt") as f:
     bag_dict = read(f)
 a_dict = simplify(bag_dict)
 my_bag = ("shiny", "gold")
-print("Part one:",len(find_containers_transitively(find_containers(my_bag, a_dict), a_dict)))
-print("Part two:", count_bags((my_bag, 1), bag_dict))
+print("Part one:", len(find_containers_transitively(find_containers(my_bag, a_dict), a_dict)))
+print("Part two:", count_bags({'c': my_bag, 'n': 1}, bag_dict))
