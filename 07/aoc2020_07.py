@@ -13,7 +13,7 @@ def read(f):
     return contain_dict
 
 def fix(bagitem): 
-    """Make a nice dict for the pair of a color and number."""
+    """Make a nice dict for the pair of color and number."""
     n, cattr, color, _ = bagitem.split(" ")
     return {'c': (cattr,color), 'n': int(n)}
 
