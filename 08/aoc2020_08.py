@@ -16,7 +16,6 @@ def run(code):
     while pos < len(code) and code[pos]["runs"] == 0:
         code[pos]["runs"] += 1
         codeline = code[pos]
-        #print("{}: {}".format(pos, codeline))
         if codeline["instr"] == "acc":
             acc += codeline["num"]
             pos += 1
@@ -24,7 +23,8 @@ def run(code):
             pos += codeline["num"]
         elif codeline["instr"] == "nop":
             pos += 1
-        else: raise Exception("Unknown code at line {}!", pos)
+        else: 
+            raise Exception("Unknown code at line {}!", pos)
     #print("last: {}".format(code[pos]))
     return {
         "finished": pos >= len(code), 
@@ -40,10 +40,13 @@ def two(code):
         if line["instr"] == "nop":
             c = halfdeepcopy(code)
             c[k]["instr"] = "jmp"
+            ret = run(c)
         elif line["instr"] == "jmp":
             c = halfdeepcopy(code)
             c[k]["instr"] = "nop"
-        ret = run(c)
+            ret = run(c)
+        else:
+            ret = False
         if ret["finished"]:
             return ret, k
 
