@@ -3,7 +3,7 @@ __author__ = "Stefan Karlsson"
 __date__ = "2020-12-08"
 
 def read(f): 
-    """Read lines from file and make a corresponding dict."""
+    """Read lines from file and make a corresponding list of dicts."""
     code = []
     for line in f:
         instr, num_str = line.strip().split(" ") 
