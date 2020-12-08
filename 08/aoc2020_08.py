@@ -26,7 +26,10 @@ def run(code):
             pos += 1
         else: raise Exception("Unknown code at line {}!", pos)
     #print("last: {}".format(code[pos]))
-    return {"finished": pos >= len(code), "acc": acc, "pos": pos}
+    return {
+        "finished": pos >= len(code), 
+        "acc": acc, 
+        "pos": pos }
 
 def halfdeepcopy(l):
     '''Make a list where every element is copied.'''
