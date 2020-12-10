@@ -30,6 +30,8 @@ def parttwo(ll):
             if n_of_1 >0:
                 combs *= pupp(n_of_1)
             n_of_1 = 0
+        else:
+            raise Exception("Other diffs than 1 or 3 in data")
     return combs
     
 with open("input.txt") as f: 
