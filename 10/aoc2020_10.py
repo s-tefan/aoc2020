@@ -20,7 +20,7 @@ def pupp(n):
         pass
 
 def pupp2(n):
-    ''' Use formula instead of recursion. Not significally faster in this case.'''
+    ''' Use formula instead of recursion. Not significally faster in this case. Not the same function ass pupp!'''
     if n>= 4:
         return 2**(n-1) - 2**(n-4)
     else:
