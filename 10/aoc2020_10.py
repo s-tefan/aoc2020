@@ -20,6 +20,7 @@ def pupp(n):
         pass
 
 def parttwo(ll):
+    '''Find seqs of 1:s and feed # to pupp. Multiply.'''
     n_of_1 = 0
     combs = 1
     for num in ll:
