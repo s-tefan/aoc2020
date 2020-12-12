@@ -58,7 +58,7 @@ b.navigate()
 print(b)
 print(b.manhattan())
 
-b = Boat(direction = (10,1))
+b = Boat(direction = (10,1), wp = True)
 with open("input.txt") as f:
     b.read(f)
 print(b)
