@@ -1,6 +1,12 @@
 def mmult(A,B):
     '''Multiply matrix A with vector B.'''
     return tuple(sum([a[j]*x for j,x in enumerate(B)]) for a in A)
+
+def vsum(A,B):
+    return tuple(map(sum, zip(A,B)))
+
+def vmult(A, k):
+    return tuple(k*a for a in A)
     
 
 class Boat:
@@ -9,12 +15,13 @@ class Boat:
         ('R',270):((0,-1),(1,0)), ('L',270):((0,1),(-1,0))}
     ahead  = {'F'}
 
-    def __init__(self):
-        self.position = [0,0]
-        self.direction = self.dirs['E']
+    def __init__(self, position = (0,0), direction = (1,0), wp = False):
+        self.position = position
+        self.direction = direction
+        self.wp = wp
 
     def __str__(self):
-        return 'Boat in position: {}, direction: {})'.format(self.position, self.direction)
+        return 'Boat in position: {}, direction: {}, using wp: {})'.format(self.position, self.direction, self.wp)
     
     def read(self, f):
         lines = [line.strip() for line in f]
@@ -23,13 +30,17 @@ class Boat:
     def do(self, instr):
         comm = instr[0]
         if comm in self.dirs:
-            self.position = map(lambda p, d: p + instr[1]*d, self.position, self.dirs[comm])
+            if self.wp:
+                self.direction = vsum(self.direction, vmult(self.dirs[comm], instr[1]))
+            else:
+                self.position = vsum(self.position, vmult(self.dirs[comm], instr[1]))
         elif instr in self.turns:
             self.direction = mmult(self.turns[instr], self.direction)
         elif comm in self.ahead:
-            self.position = tuple(p + instr[1]*self.direction[j] for j,p in enumerate(self.position))
+            self.position = vsum(self.position, vmult(self.direction, instr[1]))
         else:
             raise Exception('Unknown boat navigation command', instr)
+        #print(b)
     
     def navigate(self):
         for instr in self.instructions:
@@ -40,6 +51,14 @@ class Boat:
 
 
 b = Boat()
+with open("input.txt") as f:
+    b.read(f)
+print(b)
+b.navigate()
+print(b)
+print(b.manhattan())
+
+b = Boat(direction = (10,1))
 with open("input.txt") as f:
     b.read(f)
 print(b)
