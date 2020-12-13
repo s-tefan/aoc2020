@@ -25,8 +25,6 @@ def parttwo():
         departure = int(f.readline().strip())
         strlist = map(lambda x: x.strip(), f.readline().split(','))
         buslist = list(map(lambda x: (x[0], int(x[1])), filter(lambda x: x[1]!='x', enumerate(strlist))))
-        N = reduce(lambda x1, x2: x1*x2[1], buslist, 1)
-        x = 0
         # Check coprimality
         mlist = [bus[1] for bus in buslist]
         for i,a in enumerate(mlist):
@@ -34,11 +32,13 @@ def parttwo():
                 d,_,_ = xeuclid(a,b)
                 if d != 1: raise Exception("Not coprime") 
         # Chinese remainder solving
+        N = reduce(lambda x1, x2: x1*x2[1], buslist, 1)
+        x = 0
         for k, bus in enumerate(buslist):
             a, m = bus
             d, x1, y1 = xeuclid(N//m, m)
             x += x1*(-a)*N//m
-        x = x % N
+            x = x % N
         # print([(x+bus[0]) % bus[1] for bus in buslist])
         return(x)
         
