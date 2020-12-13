@@ -32,7 +32,7 @@ def parttwo(filename):
             for b in mlist[:i]:
                 d, _, _ = xeuclid(a,b)
                 if d != 1: raise Exception("Not coprime") 
-        # Chinese remainder solving
+        # Chinese remainder solving, for coprime moduli
         N = reduce(lambda x1, x2: x1*x2[1], buslist, 1) # Product of all moduli (bus periods)
         x = 0 # Initialize common solution
         for k, bus in enumerate(buslist):
