@@ -18,9 +18,21 @@ def build2(startlist, max):
             d[last] = pos
             last =  pos - lastpos
         pos += 1
-    return last
+    return last, len(d)
 
+import time
+tstack=[]
+tstack.append(time.process_time())
+print(build2(test, 2020))
+tstack.append(time.process_time())
+print("Time: {}".format(tstack.pop()-tstack.pop()))
+tstack.append(time.process_time())
 print(build2(input, 2020))
+tstack.append(time.process_time())
+print("Time: {}".format(tstack.pop()-tstack.pop()))
+tstack.append(time.process_time())
 print(build2(input, 30000000))
+tstack.append(time.process_time())
+print("Time: {}".format(tstack.pop()-tstack.pop()))
 
 
