@@ -1,17 +1,26 @@
 input = [0,6,1,7,2,19,20]
 test = [0,3,6]
 
-def build(nlist, max):
-    while len(nlist) < max:
-        try:
-            nlist.insert(0, nlist[1:].index(nlist[0]) + 1 )
-        except:
-            nlist.insert(0, 0)
-    return nlist
+def build2(startlist, max):
+    '''Store each number with its last position in a dict. Return last number.'''
+    pos = len(startlist)
+    d = {}
+    for k, n in enumerate(startlist[:-1]):
+        d[n] = k + 1
+    last = startlist[-1]
+    while pos < max :
+        #print(pos, d, last) 
+        lastpos = d.get(last)
+        if lastpos == None:
+            d[last] = pos
+            last = 0
+        else:
+            d[last] = pos
+            last =  pos - lastpos
+        pos += 1
+    return last
 
-ll = test.copy()
-ll.reverse()
-print(build(ll, 10))
-ll = input.copy()
-ll.reverse()
-print(build(ll, 2020)[0])
+print(build2(input, 2020))
+print(build2(input, 30000000))
+
+
