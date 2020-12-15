@@ -33,7 +33,7 @@ class Aoc14:
         self.mem[addr] = val & self.andmask | self.ormask
 
     def memsum(self):
-        return sum(self.mem[k] for k in self.mem if self.mem[k] != 0)
+        return sum(self.mem[k] for k in self.mem        )
 
 blubb = Aoc14()
 blubb.read("input.txt")
