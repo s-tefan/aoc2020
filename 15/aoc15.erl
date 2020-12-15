@@ -1,5 +1,5 @@
 -module(aoc15).
--export([partone/0]).
+-export([partone/0, memory/1]).
 
 build([A| []]) -> [0, A];
 build([A, A| T]) -> [1, A, A| T];
@@ -21,3 +21,7 @@ partone() ->
     Test = lists:reverse([0,3,6]),
     hd(make(Input, 2020)).
 
+memory(N) ->
+    Input = lists:reverse([0,6,1,7,2,19,20]),
+    Test = lists:reverse([0,3,6]),
+    hd(make(Test, N)).
