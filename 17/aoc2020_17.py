@@ -3,6 +3,7 @@ __author__ = "Stefan Karlsson"
 __date__ = "2020-12-17"
 
 class ConwayCubes:
+    """A class for the 3D version of Conways Game of Life."""
     def __init__(self, file = None):
         if file:
             self.active_set = set()
@@ -10,10 +11,8 @@ class ConwayCubes:
                 for y, c in enumerate(line.strip()):
                     if c == '#':
                         self.activate((x,y,0))
-
         else:
             self.active_set = {(0,1,0), (1,2,0), (2,0,0), (2,1,0), (2,2,0)}
-
 
     def __str__(self):
         s = ''
@@ -29,9 +28,11 @@ class ConwayCubes:
         return s
 
     def activenumber(self):
+        """Return the number of active cells in the grid."""
         return len(self.active_set)
 
     def neighbourhood(self, pos):
+        """A generator for the neighbours of a cell in a 3D grid."""
         r = range(-1, 2)
         for dx in r:
             for dy in r:
@@ -41,17 +42,20 @@ class ConwayCubes:
                     else:
                         yield tuple(map(sum, zip(pos,(dx, dy, dz))))
 
-    def is_active(self,k):
+    def is_active(self, pos):
+        """Check if cell at pos is active."""
         return k in self.active_set
 
-    def activate(self,pos):
+    def activate(self, pos):
+        """Activate cell at pos."""
         self.active_set.add(pos)
 
-    def inactivate(self,pos):
+    def inactivate(self, pos):
+        """Inactivate cell at po."""
         self.active_set.discard(pos)
 
-
     def update(self):
+        """Update the grid."""
         neighbourcount_dict = {}
         for pos in self.active_set:
             if pos not in neighbourcount_dict:
@@ -69,9 +73,8 @@ class ConwayCubes:
                 if count == 3:
                     self.activate(pos)
 
-
-
-class ConwayHyperCubes:
+class ConwayHyperCubes(ConwayCubes):
+    """Modification of ConwayCubes for 4D."""
     def __init__(self, file = None):
         if file:
             self.active_set = set()
@@ -79,10 +82,8 @@ class ConwayHyperCubes:
                 for y, c in enumerate(line.strip()):
                     if c == '#':
                         self.activate((x,y,0,0))
-
         else:
             self.active_set = {(0,1,0,0), (1,2,0,0), (2,0,0,0), (2,1,0,0), (2,2,0,0)}
-
 
     def __str__(self):
         s = ''
@@ -99,10 +100,8 @@ class ConwayHyperCubes:
                     s += '\n'
         return s
 
-    def activenumber(self):
-        return len(self.active_set)
-
     def neighbourhood(self, pos):
+        """A generator for the neighbours of a cell in a 4D grid."""
         r = range(-1, 2)
         for dx in r:
             for dy in r:
@@ -113,35 +112,10 @@ class ConwayHyperCubes:
                         else:
                             yield tuple(map(sum, zip(pos,(dx, dy, dz, dw))))
 
-    def is_active(self,k):
-        return k in self.active_set
-
-    def activate(self,pos):
-        self.active_set.add(pos)
-
-    def inactivate(self,pos):
-        self.active_set.discard(pos)
-
-    def update(self):
-        neighbourcount_dict = {}
-        for pos in self.active_set:
-            if pos not in neighbourcount_dict:
-                neighbourcount_dict[pos] = 0
-            for k in self.neighbourhood(pos):
-                if k in neighbourcount_dict:
-                    neighbourcount_dict[k] += 1
-                else:
-                    neighbourcount_dict[k] = 1
-        for (pos, count) in neighbourcount_dict.items():
-            if self.is_active(pos):
-                if count not in {2,3}:
-                    self.inactivate(pos)
-            else:
-                if count == 3:
-                    self.activate(pos)
-
+"""Class definitions over. Test programs and problem run follows."""
 
 def partone():
+    """Run the test case for part one."""
     with open("input.txt") as f:
         grid = ConwayCubes(f)
         for k in range(6):
@@ -149,6 +123,7 @@ def partone():
         return grid.activenumber()
 
 def parttwo():
+    """Run the test case for part two."""
     with open("input.txt") as f:
         grid = ConwayHyperCubes(f)
         for k in range(6):
@@ -156,6 +131,7 @@ def parttwo():
         return grid.activenumber()
 
 def testone():
+    """Run part one of AoC 2020 day 17."""
     grid = ConwayCubes()
     print(grid)
     for k in range(6):
@@ -167,6 +143,7 @@ def testone():
     return grid.activenumber()
 
 def testtwo(cycles = 6, verbose = False):
+    """Run part two of AoC 2020 day 17."""
     grid = ConwayHyperCubes()
     if verbose:
         print(grid)
@@ -181,6 +158,7 @@ def testtwo(cycles = 6, verbose = False):
 #print(testone())
 #print(testtwo())
 
+"""Run and time part one and part two."""
 import time
 tstack=[]
 #Part one
