@@ -1,4 +1,4 @@
--module(aoc18).
+-module(aoc18_1).
 -export([partone/1]).
 
 partone(Filename) ->
