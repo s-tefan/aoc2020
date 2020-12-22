@@ -44,7 +44,7 @@ class ConwayCubes:
 
     def is_active(self, pos):
         """Check if cell at pos is active."""
-        return k in self.active_set
+        return pos in self.active_set
 
     def activate(self, pos):
         """Activate cell at pos."""
@@ -115,7 +115,7 @@ class ConwayHyperCubes(ConwayCubes):
 """Class definitions over. Test programs and problem run follows."""
 
 def partone():
-    """Run the test case for part one."""
+    """Run the problem for part one."""
     with open("input.txt") as f:
         grid = ConwayCubes(f)
         for k in range(6):
@@ -123,7 +123,7 @@ def partone():
         return grid.activenumber()
 
 def parttwo():
-    """Run the test case for part two."""
+    """Run the problem for part two."""
     with open("input.txt") as f:
         grid = ConwayHyperCubes(f)
         for k in range(6):
