@@ -1,6 +1,7 @@
 class CombatPlayer:
-    def __init__(self, cardlist = []):
+    def __init__(self, cardlist = [], name = ""):
         self.deck = cardlist.copy()
+        self.name = name
     def __repr__(self):
         return str(self.deck)
     def addcard(self, c):
@@ -13,45 +14,43 @@ class CombatPlayer:
         return not self.deck
     def score(self):
         sc = 0
-        for k, card in enumerate(reversed(self.deck)):
-            sc += (k+1)*card
-        return sc
-            
+        return sum((k+1)*card for k, card in enumerate(reversed(self.deck)))
 
-def playround(playerdict, verbose = False):
+def playround(players, previous=[], verbose = False):
     cards = []
     clist = []
-    for player in playerdict.values():
+    for player in players:
         card = player.play()
         cards.append((card, player))
         clist.append(card)
     if verbose: print(cards)
     _, winner = max(cards)
     winner.putback(clist)
+    #previous.append([player, ])
 
 def getplayers(filename):
-    playerdict = {}
+    players = set()
     with open(filename) as f:
         for line in f:
             stripline = line.strip(" \n\r")
             if  stripline[:6].lower() == "player":
                 playername = stripline[6:].strip(" :")
-                player = CombatPlayer()
-                playerdict[playername] = player
+                player = CombatPlayer(name = playername)
+                players.add(player)
             elif stripline:
                 player.addcard(int(stripline))
-    return playerdict
+    return players
         
 def partone(filename):
-    playerdict = getplayers(filename)
+    players = getplayers(filename)
     over = False
     while not over:
-        playround(playerdict)
-        for k in playerdict:
-            if playerdict[k].lose():
-                print("Player {} loses!".format(k))
+        playround(players)
+        for player in players:
+            if player.lose():
+                print("Player {} loses!".format(player.name))
                 over = True
-    for name, player in playerdict.items():
-        print("Player {} scores {}".format(name, player.score()))
+    for player in players:
+        print("Player {} scores {}".format(player.name, player.score()))
 
 partone("input.txt")
