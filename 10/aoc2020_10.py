@@ -19,13 +19,6 @@ def pupp(n):
     else: 
         pass
 
-def pupp2(n):
-    ''' Use formula instead of recursion. Not significally faster in this case. Not the same function ass pupp!'''
-    if n>= 4:
-        return 2**(n-1) - 2**(n-4)
-    else:
-        return 2**(n-1)
-
 def parttwo(ll):
     '''Find seqs of 1:s and feed # to pupp. Multiply.'''
     n_of_1 = 0
