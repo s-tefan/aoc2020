@@ -45,11 +45,12 @@ def parttwo(filename):
         raise Exception("Not a correct solution!")
     return(x)
 
+
 def parttwo_sieve(filename):
     '''Does not work as expected.
     Works on test case if making list of sieve_sequance in each step.
     Out of memory for problem.
-    Does not work on test case when usig lazy filter. Why?
+    Does not work on test case when using lazy filter. Why?
     '''
     with open(filename) as f:
         departure = int(f.readline().strip())

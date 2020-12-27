@@ -1,12 +1,15 @@
--module(aoc19v2).
+
+-module(aoc19).
 -export([check/3, read/1, partone/1, test/2, parttwo/1]).
 
+%% @doc Wrapper for solving part 1 of Advent of Code 2020 day 19.
 partone(Filename) ->
     {Rules, Messages} = read(Filename),
     length(lists:filter(fun({B,R}) -> B and (R=="") end, 
         lists:map(fun(M) -> aoc19v2:check(M, dict:fetch(0, Rules), Rules) end, 
             Messages))).
 
+%% @doc Wrapper for solving part 2 of Advent of Code 2020 day 19.
 parttwo(Filename) ->
     {Rules, Messages} = read(Filename),
     length(lists:filter(fun(M) -> parttwocheck(M, Rules) end, Messages)).
@@ -31,8 +34,49 @@ count(Rnr,S,Rules,N) ->
 
 test(Filename, Start) ->
     {Rules, Messages} = read(Filename),
-        lists:map(fun(M) -> aoc19v2:check(M, dict:fetch(Start, Rules), Rules) end, 
+        lists:map(fun(M) -> check(M, dict:fetch(Start, Rules), Rules) end, 
             Messages).
+
+check("", _, _) ->
+    {false, ""};
+check(S, Rule, Rules) ->
+    case Rule of
+        {char, C} ->
+            case C == hd(S) of
+                true ->
+                    {true, tl(S)};
+                false ->
+                    {false, S}
+            end;
+        [] ->
+            {false, S};
+        [[]] ->
+            {true, S};
+        [OH| OT] ->
+            case andcheck(S, OH, S, Rules) of
+                {true, Rest} ->
+                    {true, Rest};
+                {false, _} ->
+                    check(S, OT, Rules)
+            end
+    end.
+
+andcheck([], [], _, _) ->
+    {true, ""};
+andcheck([], [_], _, _) ->
+    {false, ""};
+andcheck(S, [], _, _) ->
+    {true, S};
+andcheck(S, [Rnr| RT], Smem, Rules) ->
+    {Match, Rest} = check(S, dict:fetch(Rnr, Rules), Rules),
+    case Match of
+        true ->
+            andcheck(Rest, RT, Smem, Rules);
+        false ->
+            {false, Smem}
+    end.
+
+%% The following code is for reading rules and messages from file. %%%
 
 read(Filename) ->
     {ok, File} = file:open(Filename,[read]),
@@ -95,52 +139,3 @@ andsplit(Str) ->
         {N, T} ->
             [N| andsplit(T)]
     end.
-
-check("", _, _) ->
-    {false, ""};
-check(S, Rule, Rules) ->
-    case Rule of
-        {char, C} ->
-            case C == hd(S) of
-                true ->
-                    {true, tl(S)};
-                false ->
-                    {false, S}
-            end;
-        [] ->
-            {false, S};
-        [[]] ->
-            {true, S};
-        [OH| OT] ->
-            case andcheck(S, OH, S, Rules) of
-                {true, Rest} ->
-                    {true, Rest};
-                {false, _} ->
-                    check(S, OT, Rules)
-            end
-    end.
-
-andcheck([], [], _, _) ->
-    {true, ""};
-andcheck([], [_], _, _) ->
-    {false, ""};
-andcheck(S, [], _, _) ->
-    {true, S};
-andcheck(S, [Rnr| RT], Smem, Rules) ->
-    {Match, Rest} = check(S, dict:fetch(Rnr, Rules), Rules),
-    case Match of
-        true ->
-            andcheck(Rest, RT, Smem, Rules);
-        false ->
-            {false, Smem}
-    end.
-
-
-
-
-            
-
-
-
-
-

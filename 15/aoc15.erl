@@ -34,7 +34,7 @@ test(N) ->
     Test = lists:reverse([0,3,6]),
     make(Test, N).
 
-%%% version 2.2, akin to the python version in aoc2020_15.py, but much slower
+%%% version 2.2, akin to the python version in aoc2020_15.py, but much slower   
 
 update(State) ->
     {Last, D, Pos} = State,
