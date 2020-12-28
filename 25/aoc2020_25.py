@@ -1,7 +1,7 @@
 def mlog(x, base, modulo):
     """ Return the base logarithm of x modulo modulo. """
     # the crude way
-    m  = 1
+    m = 1
     y = 0
     while m != x:
         m *= base
@@ -16,18 +16,19 @@ def mpow(x, n, modulo):
         return 1
     elif n == 1:
         return x
-    elif n % 2: # odd power
+    elif n % 2:  # odd power
         return (x * mpow(x, n // 2, modulo) ** 2) % modulo
-    else: # even power
+    else:  # even power
         return (mpow(x, n // 2, modulo) ** 2) % modulo
-    """ Could have used a table of repeated squares for efficiency."""
+
 
 def test():
-    subnum = 7
-    cmod = 20201227
     pubkey1 = 5764801
     pubkey2 = 17807724
+    subnum = 7
+    cmod = 20201227
     return mpow(pubkey2, mlog(pubkey1, subnum, cmod), cmod)
+
 
 def partone(filename):
     with open(filename) as f:
@@ -36,6 +37,7 @@ def partone(filename):
     subnum = 7
     cmod = 20201227
     return mpow(pubkey2, mlog(pubkey1, subnum, cmod), cmod)
+
 
 print(test())
 print(partone('input.txt'))
